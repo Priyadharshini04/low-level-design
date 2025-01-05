@@ -1,4 +1,4 @@
-package com.lld.patterns.creation;
+package com.lld.patterns.creation.singleton;
 
 public enum SingleTonEnum {
     LOGGER;

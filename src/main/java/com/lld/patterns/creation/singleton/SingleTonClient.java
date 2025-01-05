@@ -1,10 +1,4 @@
-package com.lld.patterns.creation.client;
-
-import com.lld.patterns.creation.SingleTonEnum;
-import com.lld.patterns.creation.Singleton;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
+package com.lld.patterns.creation.singleton;
 
 public class SingleTonClient {
     public static void main(String[] args) throws Exception {
@@ -17,7 +11,7 @@ public class SingleTonClient {
         System.out.println(Singleton.getInstance());
         // Create SingleTon using reflection
 //        try {
-//            Class<?> singleTonClass = Class.forName("com.lld.patterns.creation.Singleton");
+//            Class<?> singleTonClass = Class.forName("com.lld.patterns.creation.singleton.Singleton");
 //            Constructor<?> constructors[] = singleTonClass.getDeclaredConstructors();
 //            constructors[0].setAccessible(true);
 //            Object instance = constructors[0].newInstance();

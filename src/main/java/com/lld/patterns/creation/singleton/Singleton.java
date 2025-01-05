@@ -1,12 +1,12 @@
-package com.lld.patterns.creation;
+package com.lld.patterns.creation.singleton;
 
 public class Singleton implements Cloneable{
     /*
-    object craetion during compile time
+    object craetion during compile time Eager
     private static final Singleton singleTonInstance=new SingleTon();
      */
 
-    // Object creation during runtime.
+    // Object creation during runtime. Lazy.
     private static Singleton singleton=null;
     private static final Object lock = new Object();
     private Singleton() throws InstantiationException {
