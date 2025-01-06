@@ -1,14 +1,19 @@
 package com.lld.patterns.creation.singleton;
 
+import java.util.concurrent.locks.ReentrantLock;
+
 public class Singleton implements Cloneable{
     /*
-    object craetion during compile time Eager
+    object creation during compile time Eager
     private static final Singleton singleTonInstance=new SingleTon();
      */
 
     // Object creation during runtime. Lazy.
-    private static Singleton singleton=null;
-    private static final Object lock = new Object();
+    private static volatile Singleton singleton=null;
+    private static final Object lock = new Object(); // intrinsic lock
+    // same as intrinsic lock but jvm gives priority for the longer waiting thread if true was set.
+    private static final ReentrantLock reentrantLock = new ReentrantLock(true);
+
     private Singleton() throws InstantiationException {
         if(singleton!=null)
         {
@@ -16,14 +21,35 @@ public class Singleton implements Cloneable{
         }
     }
     public /*synchronized*/ static Singleton getInstance() throws InstantiationException {
-        synchronized (lock) // improve performance as it minimizes the locked portion of the code, allowing for better concurrency.
+        if(singleton==null) // Double-checked locking.
         {
-            if(singleton==null)
+            synchronized (lock) // improve performance as it minimizes the locked portion of the code, allowing for better concurrency.
             {
-                singleton = new Singleton();
+                if(singleton==null)
+                {
+                    singleton = new Singleton();
+                }
             }
-            return singleton;
         }
+        return singleton;
+    }
+
+    private static Singleton getInstanceReentrantLock() throws InstantiationException {
+        if(singleton==null) // Double-checked locking.
+        {
+            try
+            {
+                reentrantLock.lock();
+                if(singleton==null)
+                {
+                    singleton = new Singleton();
+                }
+            }
+            finally {
+                reentrantLock.unlock();
+            }
+        }
+        return singleton;
     }
 
     @Override
